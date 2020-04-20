@@ -29,7 +29,7 @@ function loadFonts(verbose = true) {
     }
 }
 
-function validateAndSeparate(raw) {
+function validateAndSeparate(raw, requireImTag) {
     var keys = Object.keys(raw);
     if (keys.length != 1 || keys[0] != 'meme') {
         return "There can only be one main tag which must be named \'meme\'"
@@ -42,11 +42,25 @@ function validateAndSeparate(raw) {
             errors += `The only acceptable sub-tags are \'text\' and \'image\' not ${key}.`;
         }
         if (key == 'image') {
-            if (raw.meme.image.length > 1) {
-                errors += (errors.length == 0 ? "" : "\n");
-                errors += "There can only be one 'image' tag.";
-                continue;
-            }
+            errors += (errors.length == 0 ? "" : "\n");
+            errors += "\'image\' tags are not supported.";
+            continue;
+            // if (raw.meme.image.length > 1) {
+            //     errors += (errors.length == 0 ? "" : "\n");
+            //     errors += "There can only be one \'image\' tag.";
+            //     continue;
+            // }
+            // if (!requireImTag) {
+            //     errors += (errors.length == 0 ? "" : "\n");
+            //     errors += "Image already attached so unnecessary \'image\' tag.";
+            //     continue;
+            // }
+            // if (raw.meme.image[0]['$'] != undefined) {
+            //     errors += (errors.length == 0 ? "" : "\n");
+            //     errors += "No parameters allowed in \'image\' tag.";
+            //     continue;
+            // }
+            // ret.image = raw.meme.image[0];
         }
         if (key == 'text') {
             for (var i = 0; i < raw.meme.text.length; i++) {
@@ -59,6 +73,10 @@ function validateAndSeparate(raw) {
                 ret.text.push(textObj.data);
             }
         }
+    }
+    if (ret.image == undefined && requireImTag) {
+        errors += (errors.length == 0 ? "" : "\n");
+        errors += "No image attached so \'image\' tag is required and not provided.";
     }
     if (errors.length != 0) {
         return { err: errors };

@@ -27,7 +27,7 @@ app.post('/process', upload.any(), async function (req, res) {
                     res.status(400).send({err: "Malformed memedown code."});
                 }
                 else{
-                    var textData = memedown.validateAndSeparate(result);
+                    var textData = memedown.validateAndSeparate(result, false);
                     if (textData.err) {
                         console.log(textData.err);
                         res.status(400).send({err: textData.err});

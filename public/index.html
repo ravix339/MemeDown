@@ -1,0 +1,245 @@
+<html>
+
+<head>
+  <title>Memedown</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
+  <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+  <link rel="stylesheet" href="./style.css" />
+
+  <script type="text/javascript">
+    var _URL = window.URL || window.webkitURL;
+    $(document).ready(function () {
+      var newPlaceholder = $('#code').attr('placeholder').replace(/\\n/gi, '\n');
+      $('#code').attr('placeholder', newPlaceholder);
+      $("#img").change(function (e) {
+        var file, img;
+        if ((file = this.files[0])) {
+          img = new Image();
+          img.onload = function () {
+            $('#log').html(`Log: Uploaded file has dimensions ${this.width}px x ${this.height}`);
+          };
+          img.onerror = function () {
+            $('#log').html(`Log: ${file.type} is not a valid image`);
+          };
+          img.src = _URL.createObjectURL(file);
+        }
+      });
+      $('#upload').on('click', function (evt) {
+        $('#log').html('Log: Processing');
+        $('#out').attr('src', '');
+        var postdata = new FormData();
+        postdata.append('img', $('#img')[0].files[0]);
+        postdata.append('code', $('#code').val());
+        $.ajax({
+          type: 'post',
+          url: '/process',
+          data: postdata,
+          processData: false,
+          contentType: false,
+          success: function (response) {
+            $('#log').html('Log: Successful');
+            $('#out').attr('src', response.data);
+          },
+          error: function (error) {
+            $('#log').html("Log: " + error.responseJSON.err);
+            $('#out').attr('src', '');
+          }
+        });
+      });
+      $(".custom-file-input").on("change", function () {
+        var fileName = $(this).val().split("\\").pop();
+        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+      });
+    });
+  </script>
+</head>
+
+<body style="background-color: silver;">
+  <div class="container-fluid">
+    <div class="row" style="background-color:#ff6961;">
+      <div class="col"></div>
+      <div class="col-lg-10">
+        <div class="text-center" style="margin-top:1rem; margin-bottom: 1rem;">
+          <h1>MemeDown</h1>
+          <h3>A Markup Language for Memes</h3>
+        </div>
+      </div>
+      <div class="col"></div>
+    </div>
+    <div class="row" style="margin-top:3rem;">
+      <div class="col-lg-6">
+        <div class="form-group w-100">
+          <textarea id="code" class="form-control" rows="9" placeholder="&lt;meme&gt;\n...\n&lt;/meme&gt;"></textarea>
+          <br />
+          <div class="custom-file">
+            <input type="file" class="custom-file-input" id="img" accept="image/*">
+            <label class="custom-file-label" for="img">Select an image</label>
+          </div>
+          <div style="margin-top:1rem;">
+            <button type="button" class="btn btn-primary btn-lg" id="upload">Meme-ify</button>
+          </div>
+        </div>
+        <div class="text-center">
+          <p style="margin-top: 1rem;">The output box is a 600px by 600px square so the aspect ratio
+            of the output image may be off</p>
+          <img src="./background.jpg" width="416" height="235">
+        </div>
+      </div>
+      <div class="col-lg-6 text-center">
+        <img id="out" height="600" width="600">
+      </div>
+    </div>
+    <div class="row" style="margin-top: 2rem;">
+      <div class="col-lg-6">
+        <span>
+          <button style="opacity:1;" class="btn-sm btn-outline-dark optionbutton" data-toggle="modal"
+            data-target="#howToCode">
+            Code Structure
+          </button>
+          <button style="opacity:1;" class="btn-sm btn-outline-dark optionbutton" data-toggle="modal"
+            data-target="#exampleCode">
+            Code Examples
+          </button>
+        </span>
+      </div>
+      <div class="col-lg-6">
+        <div class="container break-text" id="log" style="margin-left: 0rem; margin-right: 2rem;">Log:</div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="howToCode" tabindex="-1" role="dialog" aria-labelledby="howToCodeLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="howToCodeLabel">Modal title</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          The first thing you'll need to do is upload an image (JPG or PNG) into the webpage. This image will act as
+          your meme background.
+          <br />
+          The MemeDown interpreter is very strict in the range of values for its inputs. Any invalid inputs will
+          result in a parse error, unless otherwise noted.
+          <br />
+          Each MemeDown document begins with a <code>&lt;meme&gt;</code> tag that signifies the beginning of the
+          document. As with other XML-like languages, this signifies the opening of a section of the code. To signify
+          the end, you must add the appropriate closing tag <code>&lt;/meme&gt;</code>. This style follows for the
+          other tags (<code>&lt;text&gt;</code> and <code>&lt;image&gt;</code>).
+          <br />
+          <br />
+          <h4>Image Tag <code>&lt;image&gt;</code></h4>
+          Currently not supported.
+          <br />
+          <br />
+          <h4>Text Tag <code>&lt;text&gt;</code></h4>
+          The text tag is the main tag that allows for the customization of the memes. There are parameters
+          that each text tag can contain: position, font, size, color.
+          <br />
+          <br />
+          <h4>position parameter</h4>
+          The position parameter is a <b>mandatory</b> parameter that defines the bounding box that the text will
+          occupy. If the text is long, the bounding box limits the fontsize of the text so that in an attempt to keep
+          the text within the box. This is not always possible if the bounding box is too small or the text is too long.
+          <br />
+          The position parameter can appear in the tag as <code>l</code>, <code>loc</code>, <code>location</code>,
+          <code>p</code>, <code>pos</code>, or <code>position</code>.
+          <br />
+          The position parameter can handle all non-negative integers. If the user passes in a floating point number,
+          the interpreter truncates decimal.
+          <br />
+          The format for the parameter is <code>position=&quot;x0,y0|x1,y1&quot;</code> where (x0,y0) is the upper
+          left corner of the bounding box and (x1,y1) is the bottom right corner.
+          <br />
+          <br />
+          <h4>font parameter</h4>
+          The font parameter is a <b>mandatory</b> parameter that defines the font that the text will be displayed
+          with. This
+          font can be different between each text tag and there is no storage of what the font is between each tag
+          (therefore you must specify each time which font to use). The fonts that are available to be used is listed
+          at at <a href="https://fonts.google.com/">Google&apos;s font repository</a>. This interpreter accepts the
+          font name as a string that is the name of the font&apos;s folder listed in
+          <a href="https://github.com/google/fonts/"> Google&apos;s font GitHub</a>
+          <br />
+          The font parameter can appear in the tag as <code>f</code> or <code>font</code>.
+          <br />
+          The format for the font is <code>font=&quot;font_base_name_all_lowercase&quot;</code> where
+          font_base_name_all_lowercase is folder name for the font in the mentioned GitHub repository.
+          <br />
+          As it stands, the interpreter cannot handle italics or bold fonts so do not try to pass in a bold font (ex:
+          <code>font=&quot;RobotoMono-Italic&quot;</code>).
+          <br />
+          <br />
+          <h4>size parameter</h4>
+          The size parameter is a <b>mandatory</b> parameter that defines the <b>max size</b> font that the text will
+          be
+          displayed with. As mentioned in the position parameter, if the bounding box is too small for the font, the
+          font-size will decrease in order to fit into the box.
+          <br />
+          The size parameter can appear in the tag as <code>s</code> or <code>size</code>.
+          <br />
+          The format for the size is <code>size=&quot;fontSize&quot;</code> where fontSize is the max size of the font
+          that you want. The acceptable range of values for fontSize is [10,100].
+          <br />
+          <br />
+          <h4>color parameter</h4>
+          The color parameter is an <b>optional</b> parameter that defines the color of the text specified in that
+          text tag.
+          <br />
+          The color parameter can appear in the tag as <code>c</code>, <code>color</code>, <code>colour</code>,
+          <code>rgb</code>.
+          <br />
+          The format for the color is <code>color=&quot;myColor&quot;</code> where myColor is any accepted CSS color
+          value (hex code and color names are accepted). If this parameter is left blank or the value of the parameter
+          is not accepted, the text specified in the tag will be displayed in white (#ffffff).
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="exampleCode" tabindex="-1" role="dialog" aria-labelledby="exampleCodeLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleCodeLabel">
+            Example MemeDown Code
+          </h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close" onclick="blur();">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          Below is an example with a single text that exercises each of the different options.
+          With the following base template (dimensions are 540px by 700px) <br /><br />
+          <div class="text-center">
+            <img src="ex1_temp.jpg" height="233" width="180">
+          </div>
+          <br />
+          <pre><code>
+              &lt;meme&gt;
+              &lt;text position=&quot;50,500|300,650&quot; font=&quot;craftygirls&quot; size=&quot;70&quot; color=&quot;blue&quot;&gt;I love memes&lt;/text&gt;
+              &lt;/meme&gt;
+          </code></pre><br />
+          This code will produce the following image: <br />
+          <div class="text-center">
+            <img src="ex1.png" height="233" width="180">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

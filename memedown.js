@@ -36,6 +36,9 @@ function validateAndSeparate(raw, requireImTag) {
     }
     var errors = "";
     ret = { text: [] }
+    if (typeof raw.meme == 'string') {
+        return {err: "", data: ret};
+    }
     for (var key of Object.keys(raw.meme)) {
         if (key != 'text' && key != 'image') {
             errors += (errors.length == 0 ? "" : "\n");
@@ -129,7 +132,7 @@ function generateLine(ctx, lineInfo) {
         verbose: true,
         font: lineInfo.font,
         minFontSize: 10,
-        maxSize: lineInfo.size
+        maxFontSize: lineInfo.size
 
     });
 

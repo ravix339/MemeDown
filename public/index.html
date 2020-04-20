@@ -11,14 +11,17 @@
   <script type="text/javascript">
     var _URL = window.URL || window.webkitURL;
     $(document).ready(function () {
+      //Set up placeholder text to include new lines
       var newPlaceholder = $('#code').attr('placeholder').replace(/\\n/gi, '\n');
       $('#code').attr('placeholder', newPlaceholder);
+
+      //Log the image size when an image is uploaded so the user knows the dimensions
       $("#img").change(function (e) {
         var file, img;
         if ((file = this.files[0])) {
           img = new Image();
           img.onload = function () {
-            $('#log').html(`Log: Uploaded file has dimensions ${this.width}px x ${this.height}`);
+            $('#log').html(`Log: Uploaded file has dimensions ${this.width}px x ${this.height}px`);
           };
           img.onerror = function () {
             $('#log').html(`Log: ${file.type} is not a valid image`);
@@ -26,12 +29,23 @@
           img.src = _URL.createObjectURL(file);
         }
       });
+
+      //On upload
       $('#upload').on('click', function (evt) {
+        //Reset buttons
         $('#log').html('Log: Processing');
         $('#out').attr('src', '');
+        $('#outdownloadjpg').attr('href', '');
+        $('#outdownloadpng').attr('href', '');
+        $('#outdownloadjpgbtn').prop('disabled', true);
+        $('#outdownloadpngbtn').prop('disabled', true);
+
+        //Get the data from the form
         var postdata = new FormData();
         postdata.append('img', $('#img')[0].files[0]);
         postdata.append('code', $('#code').val());
+
+        //Send request
         $.ajax({
           type: 'post',
           url: '/process',
@@ -40,24 +54,92 @@
           contentType: false,
           success: function (response) {
             $('#log').html('Log: Successful');
+            //Load image
             $('#out').attr('src', response.data);
+            $('#outdownloadjpg').attr('href', response.data);
+            $('#outdownloadpng').attr('href', response.data);
+            //Make image downloadable
+            $('#outdownloadjpgbtn').prop('disabled', false);
+            $('#outdownloadpngbtn').prop('disabled', false);
           },
           error: function (error) {
+            //Display error
             $('#log').html("Log: " + error.responseJSON.err);
+
+            //Reset buttons
             $('#out').attr('src', '');
+            $('#outdownloadjpg').attr('href', '');
+            $('#outdownloadpng').attr('href', '');
+            $('#outdownloadjpgbtn').prop('disabled', true);
+            $('#outdownloadpngbtn').prop('disabled', true);
           }
         });
       });
+
+      //Add label to file selector
       $(".custom-file-input").on("change", function () {
         var fileName = $(this).val().split("\\").pop();
         $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
       });
+
+      //Add the button that will copy text
+      function addCopyButtons(clipboard) {
+        document.querySelectorAll('pre > code').forEach(function (codeBlock) {
+          var button = document.createElement('button');
+          button.className = 'copy-code-button';
+          button.type = 'button';
+          button.innerText = 'Copy';
+
+          button.addEventListener('click', function () {
+            clipboard.writeText(codeBlock.innerText).then(function () {
+              /* Chrome doesn't seem to blur automatically,
+                 leaving the button in a focused state. */
+              button.blur();
+
+              button.innerText = 'Copied!';
+
+              setTimeout(function () {
+                button.innerText = 'Copy';
+              }, 2000);
+            }, function (error) {
+              button.innerText = 'Error';
+            });
+          });
+
+          var pre = codeBlock.parentNode;
+          if (pre.parentNode.classList.contains('highlight')) {
+            var highlight = pre.parentNode;
+            highlight.parentNode.insertBefore(button, highlight);
+          } else {
+            pre.parentNode.insertBefore(button, pre);
+          }
+        });
+      }
+
+      //Initialize clipboards
+      if (navigator && navigator.clipboard) {
+        addCopyButtons(navigator.clipboard);
+      } else {
+        var script = document.createElement('script');
+        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/clipboard-polyfill/2.7.0/clipboard-polyfill.promise.js';
+        script.integrity = 'sha256-waClS2re9NUbXRsryKoof+F9qc1gjjIhc2eT7ZbIv94=';
+        script.crossOrigin = 'anonymous';
+        script.onload = function () {
+          addCopyButtons(clipboard);
+        };
+
+        document.body.appendChild(script);
+      }
     });
   </script>
 </head>
 
-<body style="background-color: silver;">
+<body>
+  <!--
+    Main Body
+  -->
   <div class="container-fluid">
+    <!--Header-->
     <div class="row" style="background-color:#ff6961;">
       <div class="col"></div>
       <div class="col-lg-10">
@@ -69,6 +151,7 @@
       <div class="col"></div>
     </div>
     <div class="row" style="margin-top:3rem;">
+      <!--file + code input-->
       <div class="col-lg-6">
         <div class="form-group w-100">
           <textarea id="code" class="form-control" rows="9" placeholder="&lt;meme&gt;\n...\n&lt;/meme&gt;"></textarea>
@@ -78,20 +161,40 @@
             <label class="custom-file-label" for="img">Select an image</label>
           </div>
           <div style="margin-top:1rem;">
-            <button type="button" class="btn btn-primary btn-lg" id="upload">Meme-ify</button>
+            <span>
+              <button type="button" class="btn btn-primary btn-lg" id="upload">Meme-ify</button>
+            </span>
           </div>
         </div>
+        <!--Disclaimer + Image-->
         <div class="text-center">
-          <p style="margin-top: 1rem;">The output box is a 600px by 600px square so the aspect ratio
+          <p class="shadow" style="margin-top: 1rem;">The output box is a 600px by 600px square so the aspect ratio
             of the output image may be off</p>
-          <img src="./background.jpg" width="416" height="235">
+          <img src="./thinking.jpg" width="416" height="235">
         </div>
       </div>
+      <!--Outputs-->
       <div class="col-lg-6 text-center">
-        <img id="out" height="600" width="600">
+        <!--Image-->
+        <div>
+          <img id="out" height="600" width="600">
+        </div>
+        <!--Downloads-->
+        <div>
+          <span>
+            <a href="" id="outdownloadpng" download="yourmeme.png">
+              <button class="btn btn-primary" id="outdownloadpngbtn" disabled>Download PNG</button>
+            </a>
+            <a href="" id="outdownloadjpg" download="yourmeme.jpg">
+              <button class="btn btn-primary" id="outdownloadjpgbtn" disabled>Download JPG</button>
+            </a>
+          </span>
+        </div>
       </div>
     </div>
+    <!--Modal Opens + Log-->
     <div class="row" style="margin-top: 2rem;">
+      <!--Modal Opens-->
       <div class="col-lg-6">
         <span>
           <button style="opacity:1;" class="btn-sm btn-outline-dark optionbutton" data-toggle="modal"
@@ -104,11 +207,20 @@
           </button>
         </span>
       </div>
+      <!--Log-->
       <div class="col-lg-6">
-        <div class="container break-text" id="log" style="margin-left: 0rem; margin-right: 2rem;">Log:</div>
+        <div class="container break-text" style="margin-left: 0rem; margin-right: 2rem;">
+          <p class="shadow" id="log">Log:</p>
+        </div>
       </div>
     </div>
   </div>
+
+  <!--
+    Modals
+  -->
+
+  <!--Syntax-->
   <div class="modal fade" id="howToCode" tabindex="-1" role="dialog" aria-labelledby="howToCodeLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-xl" role="document">
@@ -203,6 +315,7 @@
       </div>
     </div>
   </div>
+  <!--Example-->
   <div class="modal fade" id="exampleCode" tabindex="-1" role="dialog" aria-labelledby="exampleCodeLabel"
     aria-hidden="true">
     <div class="modal-dialog modal-xl modal-dialog-centered" role="document">
@@ -217,16 +330,18 @@
         </div>
         <div class="modal-body">
           Below is an example with a single text that exercises each of the different options.
-          With the following base template (dimensions are 540px by 700px) <br /><br />
+          With the following <a href='./ex1_temp.jpg' download="exampletemplate.jpg">base template</a> (dimensions are
+          540px by 700px) <br /><br />
           <div class="text-center">
             <img src="ex1_temp.jpg" height="233" width="180">
           </div>
           <br />
-          <pre><code>
-              &lt;meme&gt;
-              &lt;text position=&quot;50,500|300,650&quot; font=&quot;craftygirls&quot; size=&quot;70&quot; color=&quot;blue&quot;&gt;I love memes&lt;/text&gt;
-              &lt;/meme&gt;
-          </code></pre><br />
+          <div style="margin-left: 15%;margin-right: 15%;">
+            <div class="highlight" style="background-color: silver;">
+              <pre style="padding-left: 1rem;"><code>&lt;meme&gt;<br/>&lt;text position=&quot;50,500|300,650&quot; font=&quot;craftygirls&quot; size=&quot;70&quot; color=&quot;blue&quot;&gt;I love memes&lt;/text&gt;<br/>&lt;/meme&gt;</code></pre>
+            </div>
+          </div>
+          <br />
           This code will produce the following image: <br />
           <div class="text-center">
             <img src="ex1.png" height="233" width="180">

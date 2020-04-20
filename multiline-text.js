@@ -32,7 +32,6 @@ module.exports = function(ctx, text, opts) {
 	const words = require('words-array')(text)
 	if (opts.verbose) opts.logFunction('Text contains ' + words.length + ' words')
     var lines = []
-    
 	// Finds max font size  which can be used to print whole text in opts.rec
 	for (var fontSize = opts.minFontSize; fontSize <= opts.maxFontSize; fontSize++) {
 

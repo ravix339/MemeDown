@@ -57,3 +57,17 @@ body {
     -1px 1px 0 #000,
     1px 1px 0 #000;
 }
+
+p {
+  font-size: larger;
+}
+
+textarea {
+  background-color: #002c5a!important;
+  color: white !important;
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: white !important;
+  opacity: 0.6 !important;
+}

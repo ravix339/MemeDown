@@ -32,13 +32,17 @@
 
       //On upload
       $('#upload').on('click', function (evt) {
+        this.blur();
         //Reset buttons
         $('#log').html('Log: Processing');
         $('#out').attr('src', '');
         $('#outdownloadjpg').attr('href', '');
         $('#outdownloadpng').attr('href', '');
-        $('#outdownloadjpgbtn').prop('disabled', true);
-        $('#outdownloadpngbtn').prop('disabled', true);
+        $('#out').prop('hidden', true);
+        $('#outdownloadjpgbtn').prop('hidden', true);
+        $('#outdownloadpngbtn').prop('hidden', true);
+        $('#outdownloadjpgbtn').prop('disabled', false);
+        $('#outdownloadpngbtn').prop('disabled', false);
 
         //Get the data from the form
         var postdata = new FormData();
@@ -59,8 +63,11 @@
             $('#outdownloadjpg').attr('href', response.data);
             $('#outdownloadpng').attr('href', response.data);
             //Make image downloadable
+            $('#out').prop('hidden', false);
             $('#outdownloadjpgbtn').prop('disabled', false);
             $('#outdownloadpngbtn').prop('disabled', false);
+            $('#outdownloadjpgbtn').prop('hidden', false);
+            $('#outdownloadpngbtn').prop('hidden', false);
           },
           error: function (error) {
             //Display error
@@ -70,8 +77,11 @@
             $('#out').attr('src', '');
             $('#outdownloadjpg').attr('href', '');
             $('#outdownloadpng').attr('href', '');
+            $('#out').prop('hidden', true);
             $('#outdownloadjpgbtn').prop('disabled', true);
             $('#outdownloadpngbtn').prop('disabled', true);
+            $('#outdownloadjpgbtn').prop('hidden', true);
+            $('#outdownloadpngbtn').prop('hidden', true);
           }
         });
       });
@@ -140,12 +150,12 @@
   -->
   <div class="container-fluid">
     <!--Header-->
-    <div class="row" style="background-color:#ff6961;">
+    <div class="row" style="background-color:black;">
       <div class="col"></div>
       <div class="col-lg-10">
         <div class="text-center" style="margin-top:1rem; margin-bottom: 1rem;">
-          <h1>MemeDown</h1>
-          <h3>A Markup Language for Memes</h3>
+          <h1 style="color:white">MemeDown</h1>
+          <h3 style="color:white">A Markup Language for Memes</h3>
         </div>
       </div>
       <div class="col"></div>
@@ -157,12 +167,12 @@
           <textarea id="code" class="form-control" rows="9" placeholder="&lt;meme&gt;\n...\n&lt;/meme&gt;"></textarea>
           <br />
           <div class="custom-file">
-            <input type="file" class="custom-file-input" id="img" accept="image/*">
+            <input type="file" class="custom-file-input" id="img" accept="image/*" style="background-color: #002c5a !important;">
             <label class="custom-file-label" for="img">Select an image</label>
           </div>
           <div style="margin-top:1rem;">
             <span>
-              <button type="button" class="btn btn-primary btn-lg" id="upload">Meme-ify</button>
+              <button type="button" class="btn btn-light btn-lg" id="upload">Meme-ify</button>
             </span>
           </div>
         </div>
@@ -177,16 +187,16 @@
       <div class="col-lg-6 text-center">
         <!--Image-->
         <div>
-          <img id="out" height="600" width="600">
+          <img id="out" height="600" width="600" hidden>
         </div>
         <!--Downloads-->
-        <div>
+        <div style="margin-top: 1rem;">
           <span>
             <a href="" id="outdownloadpng" download="yourmeme.png">
-              <button class="btn btn-primary" id="outdownloadpngbtn" disabled>Download PNG</button>
+              <button class="btn btn-light" id="outdownloadpngbtn" hidden disabled onclick="this.blur()">Download PNG</button>
             </a>
             <a href="" id="outdownloadjpg" download="yourmeme.jpg">
-              <button class="btn btn-primary" id="outdownloadjpgbtn" disabled>Download JPG</button>
+              <button class="btn btn-light" id="outdownloadjpgbtn" hidden disabled onclick="this.blur()">Download JPG</button>
             </a>
           </span>
         </div>
@@ -197,12 +207,12 @@
       <!--Modal Opens-->
       <div class="col-lg-6">
         <span>
-          <button style="opacity:1;" class="btn-sm btn-outline-dark optionbutton" data-toggle="modal"
-            data-target="#howToCode">
+          <button style="opacity:1;" class="btn btn-light" data-toggle="modal"
+            data-target="#howToCode" onclick="this.blur()">
             Code Structure
           </button>
-          <button style="opacity:1;" class="btn-sm btn-outline-dark optionbutton" data-toggle="modal"
-            data-target="#exampleCode">
+          <button style="opacity:1;" class="btn btn-light" data-toggle="modal"
+            data-target="#exampleCode" onclick="this.blur()">
             Code Examples
           </button>
         </span>

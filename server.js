@@ -15,6 +15,10 @@ memedown.loadFonts();
 
 app.post('/process', upload.any(), async function (req, res) {
     var code = req.body.code;
+    if (code == null || code == undefined || code == '') {
+        res.status(400).send({err: "No memedown code."});
+        return;   
+    }
     if (req.files.length == 0) {
         res.status(400).send({err: "No valid image attached."});
         return;

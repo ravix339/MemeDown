@@ -2,145 +2,20 @@
 
 <head>
   <title>Memedown</title>
+  <!-- <link rel=stylesheet href="../codemirror/doc/docs.css"> -->
+  <link rel="stylesheet" href="./codemirror.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
   <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.bundle.min.js"></script>
+  <script src="./codemirror/codemirror.js"></script>
+  <script src="./codemirror/closetag.js"></script>
+  <script src="./codemirror/xml-fold.js"></script>
+  <script src="./codemirror/xml.js"></script>
+  <script src="./codemirror/placeholder.js"></script>
   <link rel="stylesheet" href="./style.css" />
 
-  <script type="text/javascript">
-    var _URL = window.URL || window.webkitURL;
-    $(document).ready(function () {
-      //Set up placeholder text to include new lines
-      var newPlaceholder = $('#code').attr('placeholder').replace(/\\n/gi, '\n');
-      $('#code').attr('placeholder', newPlaceholder);
-
-      //Log the image size when an image is uploaded so the user knows the dimensions
-      $("#img").change(function (e) {
-        var file, img;
-        if ((file = this.files[0])) {
-          img = new Image();
-          img.onload = function () {
-            $('#log').html(`Log: Uploaded file has dimensions ${this.width}px x ${this.height}px`);
-          };
-          img.onerror = function () {
-            $('#log').html(`Log: ${file.type} is not a valid image`);
-          };
-          img.src = _URL.createObjectURL(file);
-        }
-      });
-
-      //On upload
-      $('#upload').on('click', function (evt) {
-        this.blur();
-        //Reset buttons
-        $('#log').html('Log: Processing');
-        $('#out').attr('src', '');
-        $('#outdownloadjpg').attr('href', '');
-        $('#outdownloadpng').attr('href', '');
-        $('#out').prop('hidden', true);
-        $('#outdownloadjpgbtn').prop('hidden', true);
-        $('#outdownloadpngbtn').prop('hidden', true);
-        $('#outdownloadjpgbtn').prop('disabled', false);
-        $('#outdownloadpngbtn').prop('disabled', false);
-
-        //Get the data from the form
-        var postdata = new FormData();
-        postdata.append('img', $('#img')[0].files[0]);
-        postdata.append('code', $('#code').val());
-
-        //Send request
-        $.ajax({
-          type: 'post',
-          url: '/process',
-          data: postdata,
-          processData: false,
-          contentType: false,
-          success: function (response) {
-            $('#log').html('Log: Successful');
-            //Load image
-            $('#out').attr('src', response.data);
-            $('#outdownloadjpg').attr('href', response.data);
-            $('#outdownloadpng').attr('href', response.data);
-            //Make image downloadable
-            $('#out').prop('hidden', false);
-            $('#outdownloadjpgbtn').prop('disabled', false);
-            $('#outdownloadpngbtn').prop('disabled', false);
-            $('#outdownloadjpgbtn').prop('hidden', false);
-            $('#outdownloadpngbtn').prop('hidden', false);
-          },
-          error: function (error) {
-            //Display error
-            $('#log').html("Log: " + error.responseJSON.err);
-
-            //Reset buttons
-            $('#out').attr('src', '');
-            $('#outdownloadjpg').attr('href', '');
-            $('#outdownloadpng').attr('href', '');
-            $('#out').prop('hidden', true);
-            $('#outdownloadjpgbtn').prop('disabled', true);
-            $('#outdownloadpngbtn').prop('disabled', true);
-            $('#outdownloadjpgbtn').prop('hidden', true);
-            $('#outdownloadpngbtn').prop('hidden', true);
-          }
-        });
-      });
-
-      //Add label to file selector
-      $(".custom-file-input").on("change", function () {
-        var fileName = $(this).val().split("\\").pop();
-        $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
-      });
-
-      //Add the button that will copy text
-      function addCopyButtons(clipboard) {
-        document.querySelectorAll('pre > code').forEach(function (codeBlock) {
-          var button = document.createElement('button');
-          button.className = 'copy-code-button';
-          button.type = 'button';
-          button.innerText = 'Copy';
-
-          button.addEventListener('click', function () {
-            clipboard.writeText(codeBlock.innerText).then(function () {
-              /* Chrome doesn't seem to blur automatically,
-                 leaving the button in a focused state. */
-              button.blur();
-
-              button.innerText = 'Copied!';
-
-              setTimeout(function () {
-                button.innerText = 'Copy';
-              }, 2000);
-            }, function (error) {
-              button.innerText = 'Error';
-            });
-          });
-
-          var pre = codeBlock.parentNode;
-          if (pre.parentNode.classList.contains('highlight')) {
-            var highlight = pre.parentNode;
-            highlight.parentNode.insertBefore(button, highlight);
-          } else {
-            pre.parentNode.insertBefore(button, pre);
-          }
-        });
-      }
-
-      //Initialize clipboards
-      if (navigator && navigator.clipboard) {
-        addCopyButtons(navigator.clipboard);
-      } else {
-        var script = document.createElement('script');
-        script.src = 'https://cdnjs.cloudflare.com/ajax/libs/clipboard-polyfill/2.7.0/clipboard-polyfill.promise.js';
-        script.integrity = 'sha256-waClS2re9NUbXRsryKoof+F9qc1gjjIhc2eT7ZbIv94=';
-        script.crossOrigin = 'anonymous';
-        script.onload = function () {
-          addCopyButtons(clipboard);
-        };
-
-        document.body.appendChild(script);
-      }
-    });
+  <script type="text/javascript" src="./script.js">
   </script>
 </head>
 
@@ -164,10 +39,12 @@
       <!--file + code input-->
       <div class="col-lg-6">
         <div class="form-group w-100">
-          <textarea id="code" class="form-control" rows="9" placeholder="&lt;meme&gt;\n...\n&lt;/meme&gt;"></textarea>
-          <br />
+          <form>
+            <textarea id="code" class="form-control" rows="9" placeholder="&lt;meme&gt;...&lt;/meme&gt;"></textarea>
+          </form>
           <div class="custom-file">
-            <input type="file" class="custom-file-input" id="img" accept="image/*" style="background-color: #002c5a !important;">
+            <input type="file" class="custom-file-input" id="img" accept="image/*"
+              style="background-color: #002c5a !important;">
             <label class="custom-file-label" for="img">Select an image</label>
           </div>
           <div style="margin-top:1rem;">
@@ -193,26 +70,28 @@
         <div style="margin-top: 1rem;">
           <span>
             <a href="" id="outdownloadpng" download="yourmeme.png">
-              <button class="btn btn-light" id="outdownloadpngbtn" hidden disabled onclick="this.blur()">Download PNG</button>
+              <button class="btn btn-light" id="outdownloadpngbtn" hidden disabled onclick="this.blur()">Download
+                PNG</button>
             </a>
             <a href="" id="outdownloadjpg" download="yourmeme.jpg">
-              <button class="btn btn-light" id="outdownloadjpgbtn" hidden disabled onclick="this.blur()">Download JPG</button>
+              <button class="btn btn-light" id="outdownloadjpgbtn" hidden disabled onclick="this.blur()">Download
+                JPG</button>
             </a>
           </span>
         </div>
       </div>
     </div>
     <!--Modal Opens + Log-->
-    <div class="row" style="margin-top: 2rem;">
+    <div class="row" style="margin-top: 2px;">
       <!--Modal Opens-->
       <div class="col-lg-6">
         <span>
-          <button style="opacity:1;" class="btn btn-light" data-toggle="modal"
-            data-target="#howToCode" onclick="this.blur()">
+          <button style="opacity:1;" class="btn btn-light" data-toggle="modal" data-target="#howToCode"
+            onclick="this.blur()">
             Code Structure
           </button>
-          <button style="opacity:1;" class="btn btn-light" data-toggle="modal"
-            data-target="#exampleCode" onclick="this.blur()">
+          <button style="opacity:1;" class="btn btn-light" data-toggle="modal" data-target="#exampleCode"
+            onclick="this.blur()">
             Code Examples
           </button>
         </span>
@@ -348,7 +227,8 @@
           <br />
           <div style="margin-left: 15%;margin-right: 15%;">
             <div class="highlight" style="background-color: silver;">
-              <pre style="padding-left: 1rem;"><code>&lt;meme&gt;<br/>&lt;text position=&quot;50,500|300,650&quot; font=&quot;craftygirls&quot; size=&quot;70&quot; color=&quot;blue&quot;&gt;I love memes&lt;/text&gt;<br/>&lt;/meme&gt;</code></pre>
+              <pre
+                style="padding-left: 1rem;"><code>&lt;meme&gt;<br/>&lt;text position=&quot;50,500|300,650&quot; font=&quot;craftygirls&quot; size=&quot;70&quot; color=&quot;blue&quot;&gt;I love memes&lt;/text&gt;<br/>&lt;/meme&gt;</code></pre>
             </div>
           </div>
           <br />

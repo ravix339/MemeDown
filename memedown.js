@@ -32,7 +32,7 @@ function loadFonts(verbose = true) {
 function validateAndSeparate(raw, requireImTag) {
     var keys = Object.keys(raw);
     if (keys.length != 1 || keys[0] != 'meme') {
-        return "There can only be one main tag which must be named \'meme\'"
+        return {err: "There can only be one main tag which must be named \'meme\'" }
     }
     var errors = "";
     ret = { text: [] }

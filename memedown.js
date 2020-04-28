@@ -3,11 +3,7 @@ exports.methods = {
     loadFonts: loadFonts,
     validateAndSeparate: validateAndSeparate,
 };
-// exports.dev = {
-//     escape: escape_text,
-//     parseLineByStyle: parseLineByStyle,
-//     formatLineStyles: formatLineStyles,
-// }
+
 var fs = require('fs');
 //var canvasText = require('canvas-multiline-text');
 var canvasText = require('./multiline-text.js');
@@ -450,7 +446,7 @@ function parseLineByStyle(quote, spcs_left) {
 function formatLineStyles(lineStyles, fontTypes) {
     var tmp = [];
     var font_map = { '': 'Regular.ttf', 'bold-italic': 'BoldItalic.ttf', 'italic-bold': 'BoldItalic.ttf', 'bold': 'Bold.ttf', 'italic': 'Italic.ttf' };
-
+    console.log(lineStyles)
     for (var i = 0; i < lineStyles.length; i++) {
         var pair = lineStyles[i];
         var style = font_map[pair[0]];
@@ -459,7 +455,7 @@ function formatLineStyles(lineStyles, fontTypes) {
             continue;
         }
         else if (style == 'BoldItalic.ttf') {
-            var split = pair[0].split('-')[0]
+            var split = pair[0].split('-')
             var primary = font_map[split[0]];
             var secondary = font_map[split[1]];
             if (fontTypes.includes(primary)) {
@@ -471,7 +467,7 @@ function formatLineStyles(lineStyles, fontTypes) {
                 continue;
             }
         }
-        tmp.push('Regular.ttf', pair[1]);
+        tmp.push(['Regular.ttf', pair[1]]);
     }
 
     var currFont = tmp[0][0];

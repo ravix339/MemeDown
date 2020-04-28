@@ -3,6 +3,11 @@ exports.methods = {
     loadFonts: loadFonts,
     validateAndSeparate: validateAndSeparate,
 };
+// exports.dev = {
+//     escape: escape_text,
+//     parseLineByStyle: parseLineByStyle,
+//     formatLineStyles: formatLineStyles,
+// }
 var fs = require('fs');
 //var canvasText = require('canvas-multiline-text');
 var canvasText = require('./multiline-text.js');
@@ -344,7 +349,6 @@ function parseColor(param) {
  */
 
 // Not used since italics and bolds aren't implemented.
-// Bug introduced where escaped '_' appears in string as \\_ instead of \_
 function escape_text(str) {
     var special_characters = ['*', '_'];
     var special_characters_map = { '*': 'bold', '_': 'italic' };
@@ -368,8 +372,8 @@ function escape_text(str) {
                     ret += '\\';
                 }
             }
-            else if (c != spc[-1]) {
-                spc = spc.substr(1);
+            else if (c == spc[spc.length - 1]) {
+                spc = spc.substring(0, spc.length - 1)
             }
             else {
                 search_c = str.indexOf(c, i + 1);
@@ -394,11 +398,10 @@ function escape_text(str) {
 }
 
 //This splits lines into what style they would have (regular, bold, italics, bolditalics)
-//May have been culprit of infinite loop that was coded in when translating from python.
 function parseLineByStyle(quote, spcs_left) {
     var special_characters_map = { '*': 'bold', '_': 'italic' }
     if (spcs_left.length == 0) {
-        return ['', quote];
+        return [['', quote]];
     }
     var ret = []
     var in_spc = false;
@@ -407,9 +410,9 @@ function parseLineByStyle(quote, spcs_left) {
     while (index < quote.length) {
         var c = quote[index];
         if (spcs_left.includes(c)) {
-            if (index == 0 || (index > 0 && quote[quote.length - 1] != '\\')) {
+            if (index == 0 || (index > 0 && quote[index - 1] != '\\')) {
                 if (last_end != index) {
-                    ret.push(['', quote.substr(last_end, (index - last_end))]);
+                    ret.push(['', quote.substring(last_end, index)]);
                 }
                 var end = quote.indexOf(c, index + 1);
                 while (quote[end - 1] == '\\') {
@@ -421,13 +424,13 @@ function parseLineByStyle(quote, spcs_left) {
                         otherSpc.push(v);
                     }
                 });
-                result = parseLineByStyle(quote.substr(index + 1, (end - index - 1)), otherSpc);
+                result = parseLineByStyle(quote.substring(index + 1, end), otherSpc);
                 result.forEach(pair => {
                     if (pair[0].length != 0) {
                         ret.push([special_characters_map[c] + '-' + pair[0], pair[1]]);
                     }
                     else {
-                        ret.push((self.special_characters_map[c] + pair[0], pair[1]))
+                        ret.push([special_characters_map[c] + pair[0], pair[1]])
                     }
                 });
                 last_end = end + 1;
@@ -438,13 +441,12 @@ function parseLineByStyle(quote, spcs_left) {
     }
 
     if (last_end != quote.length) {
-        ret.push(['', quote.substr(last_end)]);
+        ret.push(['', quote.substring(last_end)]);
     }
     return ret;
 }
 
 //Assigns a font file to the text (accounting for if the font file doesn't exist)
-//May have been culprit of infinite loop that was coded in when translating from python.
 function formatLineStyles(lineStyles, fontTypes) {
     var tmp = [];
     var font_map = { '': 'Regular.ttf', 'bold-italic': 'BoldItalic.ttf', 'italic-bold': 'BoldItalic.ttf', 'bold': 'Bold.ttf', 'italic': 'Italic.ttf' };

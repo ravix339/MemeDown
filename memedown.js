@@ -32,12 +32,12 @@ function loadFonts(verbose = true) {
 function validateAndSeparate(raw, requireImTag) {
     var keys = Object.keys(raw);
     if (keys.length != 1 || keys[0] != 'meme') {
-        return {err: "There can only be one main tag which must be named \'meme\'" }
+        return { err: "There can only be one main tag which must be named \'meme\'" }
     }
     var errors = "";
     ret = { text: [] }
     if (typeof raw.meme == 'string') {
-        return {err: "", data: ret};
+        return { err: "", data: ret };
     }
     for (var key of Object.keys(raw.meme)) {
         if (key != 'text' && key != 'image') {
@@ -104,16 +104,6 @@ function drawCanvas(textData, imageData, width, height) {
 }
 
 function generateLine(ctx, lineInfo) {
-    var fonts = {}
-    var path = './fonts/' + lineInfo.font;
-    //var files = fs.readdirSync(path);
-    //set up fonts
-    // for (var i = 0; i < files.length; i++) {
-    //     if (/\.ttf$/.test(files[i])) {
-    //         var name_type = files[i].split('-');
-    //         fonts[name_type[1]] = opentype.loadSync(path + '/' + files[i]);
-    //     }
-    // }
 
     var boundingBox = {
         x: lineInfo.position[0][0],
@@ -180,6 +170,7 @@ function validateText(textData) {
         if (flag) {
             continue;
         }
+        obj[paramType] = null;
         response = parseParam(paramType, val);
         if (response.err != "") {
             error += (error.length == 0 ? "" : '\n');
@@ -187,6 +178,18 @@ function validateText(textData) {
             continue;
         }
         obj[paramType] = response.val;
+    }
+    if (obj.font == undefined) {
+        error += (error.length == 0 ? "" : "\n");
+        error += "No valid font parameter provided.";
+    }
+    if (obj.position == undefined) {
+        error += (error.length == 0 ? "" : "\n");
+        error += "No valid position parameter provided.";
+    }
+    if (obj.size == undefined) {
+        error += (error.length == 0 ? "" : "\n");
+        error += "No valid size parameter provided.";
     }
     if (error.length != 0) {
         return { err: error }

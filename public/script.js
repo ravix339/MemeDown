@@ -19,6 +19,11 @@ $(document).ready(function () {
         $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
     });
 
+    $('#fileclear').on('click', function () {
+        document.getElementById('img').value = "";
+        $('#log').html('Uploaded file cleared');
+    });
+
     initializeCopyButtons();
 });
 

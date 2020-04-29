@@ -2,6 +2,7 @@
 
 <head>
   <title>Memedown</title>
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1">
   <link rel="stylesheet" href="./codemirror/codemirror.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" />
   <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
@@ -27,26 +28,26 @@
     <div class="row" style="background-color:black;">
       <div class="col"></div>
       <div class="col-lg-10">
-        <div class="text-center" style="margin-top:1rem; margin-bottom: 1rem;">
+        <div class="text-center" style="margin-top:1%; margin-bottom: 1%;">
           <h1 style="color:white">MemeDown</h1>
           <h3 style="color:white">A Markup Language for Memes</h3>
         </div>
       </div>
       <div class="col"></div>
     </div>
-    <div class="row" style="margin-top:3rem;">
+    <div class="row" style="margin-top:3%;">
       <!--file + code input-->
       <div class="col-lg-6">
         <div class="form-group w-100">
           <form>
-            <textarea id="code" class="form-control" rows="9" placeholder="&lt;meme&gt;...&lt;/meme&gt;"></textarea>
+          <textarea id="code" class="form-control" rows="9" placeholder="Meme your way to greatness &lt;meme&gt;...&lt;/meme&gt;"></textarea>
           </form>
           <div class="custom-file">
             <input type="file" class="custom-file-input" id="img" accept="image/*"
               style="background-color: #002c5a !important;">
             <label class="custom-file-label" for="img">Select an image</label>
           </div>
-          <div style="margin-top:1rem;">
+          <div style="margin-top:1%;">
             <span>
               <button type="button" class="btn btn-light btn-lg" id="fileclear">Clear File Selection</button>
               <button type="button" class="btn btn-light btn-lg" id="upload">Meme-ify</button>
@@ -55,7 +56,7 @@
         </div>
         <!--Disclaimer + Image-->
         <div class="text-center">
-          <p class="shadow" style="margin-top: 1rem;">The output box is a 600px by 600px square so the aspect ratio
+          <p class="shadow" style="margin-top: 1%;">The output box is a 600px by 600px square so the aspect ratio
             of the output image may be off</p>
           <img src="./thinking.jpg" width="416" height="235">
         </div>
@@ -67,7 +68,7 @@
           <img id="out" height="600" width="600" hidden>
         </div>
         <!--Downloads-->
-        <div style="margin-top: 1rem;">
+        <div style="margin-top: 1%;">
           <span>
             <a href="" id="outdownloadpng" download="yourmeme.png">
               <button class="btn btn-light" id="outdownloadpngbtn" hidden disabled onclick="this.blur()">Download
@@ -98,7 +99,7 @@
       </div>
       <!--Log-->
       <div class="col-lg-6">
-        <div class="container break-text" style="margin-left: 0rem; margin-right: 2rem;">
+        <div class="container break-text" style="margin-left: 0%; margin-right: 2%;">
           <p class="shadow" id="log">Log:</p>
         </div>
       </div>
@@ -134,9 +135,12 @@
           <br />
           <br />
           <h4>Image Tag <code>&lt;image&gt;</code></h4>
-          The image tag is an alternative to uploading an image directly through the web interface or through a POST request
-          to the server. This tag is very simple and takes no parameters. The data between the the open and closing tags simply
-          comprises of a url to an image (direct link to image - url ends with &apos;.jpg&apos; or &apos;.png&apos;). As it stands
+          The image tag is an alternative to uploading an image directly through the web interface or through a POST
+          request
+          to the server. This tag is very simple and takes no parameters. The data between the the open and closing tags
+          simply
+          comprises of a url to an image (direct link to image - url ends with &apos;.jpg&apos; or &apos;.png&apos;). As
+          it stands
           only HTTPS urls are supported.
           <br />
           <br />
@@ -231,7 +235,7 @@
           <div style="margin-left: 15%;margin-right: 15%;">
             <div class="highlight" style="background-color: silver;">
               <pre
-                style="padding-left: 1rem;"><code>&lt;meme&gt;<br/>&lt;text position=&quot;50,500|300,650&quot; font=&quot;craftygirls&quot; size=&quot;70&quot; color=&quot;blue&quot;&gt;I love memes&lt;/text&gt;<br/>&lt;/meme&gt;</code></pre>
+                style="padding-left: 1%;"><code>&lt;meme&gt;<br/>&lt;text position=&quot;50,500|300,650&quot; font=&quot;craftygirls&quot; size=&quot;70&quot; color=&quot;blue&quot;&gt;I love memes&lt;/text&gt;<br/>&lt;/meme&gt;</code></pre>
             </div>
           </div>
           <br />
@@ -244,7 +248,7 @@
           <div style="margin-left: 15%;margin-right: 15%;">
             <div class="highlight" style="background-color: silver;">
               <pre
-                style="padding-left: 1rem;"><code>&lt;meme&gt;<br/>&lt;image&gt;https://i.kym-cdn.com/photos/images/facebook/001/288/258/1fc.jpg&lt;/image&gt;<br/>&lt;text position=&quot;50,500|300,650&quot; font=&quot;craftygirls&quot; size=&quot;70&quot; color=&quot;blue&quot;&gt;I love memes&lt;/text&gt;<br/>&lt;/meme&gt;</code></pre>
+                style="padding-left: 1%;"><code>&lt;meme&gt;<br/>&lt;image&gt;https://i.kym-cdn.com/photos/images/facebook/001/288/258/1fc.jpg&lt;/image&gt;<br/>&lt;text position=&quot;50,500|300,650&quot; font=&quot;craftygirls&quot; size=&quot;70&quot; color=&quot;blue&quot;&gt;I love memes&lt;/text&gt;<br/>&lt;/meme&gt;</code></pre>
             </div>
           </div>
         </div>

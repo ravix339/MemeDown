@@ -1,11 +1,9 @@
 var express = require('express');
 var app = express();
-var gm = require('gm').subClass({ imageMagick: true }); //Try to remove if possible
 var sizeOf = require('image-size');
 var https = require('https');
 var url = require('url');
 var multer = require('multer');
-var fs = require('fs');
 var urlExists = require('url-exists');
 var parseString = require('xml2js').parseString;
 var memedown = require('./memedown.js').methods;

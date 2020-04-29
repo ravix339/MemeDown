@@ -38,6 +38,8 @@
   white-space: nowrap;
 }
 
+.CodeMirror-placeholder { color: lightgrey !important; opacity: .5!important;}
+
 .CodeMirror-guttermarker { color: black; }
 .CodeMirror-guttermarker-subtle { color: #999; }
 

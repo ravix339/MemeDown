@@ -46,25 +46,30 @@ function validateAndSeparate(raw, requireImTag) {
             errors += `The only acceptable sub-tags are \'text\' and \'image\' not ${key}.`;
         }
         if (key == 'image') {
-            errors += (errors.length == 0 ? "" : "\n");
-            errors += "\'image\' tags are not supported.";
-            continue;
-            // if (raw.meme.image.length > 1) {
-            //     errors += (errors.length == 0 ? "" : "\n");
-            //     errors += "There can only be one \'image\' tag.";
-            //     continue;
-            // }
-            // if (!requireImTag) {
-            //     errors += (errors.length == 0 ? "" : "\n");
-            //     errors += "Image already attached so unnecessary \'image\' tag.";
-            //     continue;
-            // }
-            // if (raw.meme.image[0]['$'] != undefined) {
-            //     errors += (errors.length == 0 ? "" : "\n");
-            //     errors += "No parameters allowed in \'image\' tag.";
-            //     continue;
-            // }
-            // ret.image = raw.meme.image[0];
+            // errors += (errors.length == 0 ? "" : "\n");
+            // errors += "\'image\' tags are not supported.";
+            // continue;
+            if (!requireImTag) {
+                errors += (errors.length == 0 ? "" : "\n");
+                errors += "Image already attached, so \'image\' tag is unnecessary.";
+                continue;
+            }
+            if (raw.meme.image.length > 1) {
+                errors += (errors.length == 0 ? "" : "\n");
+                errors += "There can only be one \'image\' tag.";
+                continue;
+            }
+            if (raw.meme.image[0]['$'] != undefined) {
+                errors += (errors.length == 0 ? "" : "\n");
+                errors += "No parameters allowed in \'image\' tag.";
+                continue;
+            }
+            if (!(/(https:)([/|.|\w|\s|-])*\.(?:jpg|gif|png)/.test(raw.meme.image))) {
+                errors += (errors.length == 0 ? "" : "\n");
+                errors += "Invalid image url (only HTTPS supported).";
+                continue;    
+            }
+            ret.image = raw.meme.image[0];
         }
         if (key == 'text') {
             for (var i = 0; i < raw.meme.text.length; i++) {
@@ -80,7 +85,7 @@ function validateAndSeparate(raw, requireImTag) {
     }
     if (ret.image == undefined && requireImTag) {
         errors += (errors.length == 0 ? "" : "\n");
-        errors += "No image attached so \'image\' tag is required and not provided.";
+        errors += "No image attached so \'image\' tag is required and a valid image url is not provided.";
     }
     if (errors.length != 0) {
         return { err: errors };

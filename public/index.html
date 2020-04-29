@@ -115,7 +115,7 @@
     <div class="modal-dialog modal-xl" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="howToCodeLabel">Modal title</h5>
+          <h5 class="modal-title" id="howToCodeLabel">Code Specification</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -134,7 +134,10 @@
           <br />
           <br />
           <h4>Image Tag <code>&lt;image&gt;</code></h4>
-          Currently not supported.
+          The image tag is an alternative to uploading an image directly through the web interface or through a POST request
+          to the server. This tag is very simple and takes no parameters. The data between the the open and closing tags simply
+          comprises of a url to an image (direct link to image - url ends with &apos;.jpg&apos; or &apos;.png&apos;). As it stands
+          only HTTPS urls are supported.
           <br />
           <br />
           <h4>Text Tag <code>&lt;text&gt;</code></h4>
@@ -235,6 +238,14 @@
           This code will produce the following image: <br />
           <div class="text-center">
             <img src="ex1.png" height="233" width="180">
+          </div>
+          <br />
+          The following code will also produce a similar image.
+          <div style="margin-left: 15%;margin-right: 15%;">
+            <div class="highlight" style="background-color: silver;">
+              <pre
+                style="padding-left: 1rem;"><code>&lt;meme&gt;<br/>&lt;image&gt;https://i.kym-cdn.com/photos/images/facebook/001/288/258/1fc.jpg&lt;/image&gt;<br/>&lt;text position=&quot;50,500|300,650&quot; font=&quot;craftygirls&quot; size=&quot;70&quot; color=&quot;blue&quot;&gt;I love memes&lt;/text&gt;<br/>&lt;/meme&gt;</code></pre>
+            </div>
           </div>
         </div>
         <div class="modal-footer">

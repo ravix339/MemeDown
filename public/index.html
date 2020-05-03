@@ -40,7 +40,8 @@
       <div class="col-lg-6">
         <div class="form-group w-100">
           <form>
-          <textarea id="code" class="form-control" rows="9" placeholder="Meme your way to greatness &lt;meme&gt;...&lt;/meme&gt;"></textarea>
+            <textarea id="code" class="form-control" rows="9"
+              placeholder="Meme your way to greatness &lt;meme&gt;...&lt;/meme&gt;"></textarea>
           </form>
           <div class="custom-file">
             <input type="file" class="custom-file-input" id="img" accept="image/*"
@@ -165,12 +166,13 @@
           <br />
           <br />
           <h4>font parameter</h4>
-          The font parameter is a <b>mandatory</b> parameter that defines the font that the text will be displayed
-          with. This
-          font can be different between each text tag and there is no storage of what the font is between each tag
-          (therefore you must specify each time which font to use). The fonts that are available to be used is listed
-          at at <a href="https://fonts.google.com/">Google&apos;s font repository</a>. This interpreter accepts the
-          font name as a string that is the name of the font&apos;s folder listed in
+          The font parameter is a <b>optional</b> parameter that defines the font that the text will be displayed
+          with. This font can be different between each text tag and there is no storage of what the font is between
+          each tag (therefore you must specify each time which font to use if you want to choose a different font than
+          the default).
+          The fonts that are available to be used is listed at at <a href="https://fonts.google.com/">Google&apos;s font
+            repository</a>. This interpreter
+          accepts the font name as a string that is the name of the font&apos;s folder listed in
           <a href="https://github.com/google/fonts/"> Google&apos;s font GitHub</a>
           <br />
           The font parameter can appear in the tag as <code>f</code> or <code>font</code>.
@@ -179,11 +181,11 @@
           font_base_name_all_lowercase is folder name for the font in the mentioned GitHub repository.
           <br />
           As it stands, the interpreter cannot handle italics or bold fonts so do not try to pass in a bold font (ex:
-          <code>font=&quot;RobotoMono-Italic&quot;</code>).
+          <code>font=&quot;RobotoMono-Italic&quot;</code>). The default font is set to "Oswald".
           <br />
           <br />
           <h4>size parameter</h4>
-          The size parameter is a <b>mandatory</b> parameter that defines the <b>max size</b> font that the text will
+          The size parameter is a <b>optional</b> parameter that defines the <b>max size</b> font that the text will
           be
           displayed with. As mentioned in the position parameter, if the bounding box is too small for the font, the
           font-size will decrease in order to fit into the box.
@@ -191,7 +193,8 @@
           The size parameter can appear in the tag as <code>s</code> or <code>size</code>.
           <br />
           The format for the size is <code>size=&quot;fontSize&quot;</code> where fontSize is the max size of the font
-          that you want. The acceptable range of values for fontSize is [10,100].
+          that you want. The acceptable range of values for fontSize is [10,500]. The default is to create the largest
+          text size that fills the bounding box defined by the position parameter.
           <br />
           <br />
           <h4>color parameter</h4>

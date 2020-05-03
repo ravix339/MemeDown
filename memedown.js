@@ -186,16 +186,18 @@ function validateText(textData) {
         obj[paramType] = response.val;
     }
     if (obj.font == undefined) {
-        error += (error.length == 0 ? "" : "\n");
-        error += "No valid font parameter provided.";
+        // error += (error.length == 0 ? "" : "\n");
+        // error += "No valid font parameter provided.";
+        obj.font = "oswald";
     }
     if (obj.position == undefined) {
         error += (error.length == 0 ? "" : "\n");
         error += "No valid position parameter provided.";
     }
     if (obj.size == undefined) {
-        error += (error.length == 0 ? "" : "\n");
-        error += "No valid size parameter provided.";
+        // error += (error.length == 0 ? "" : "\n");
+        // error += "No valid size parameter provided.";
+        obj.size = 500;
     }
     if (error.length != 0) {
         return { err: error }
@@ -243,8 +245,8 @@ function parseSize(param) {
     if (isNaN(num)) {
         return { err: "Text size is not an integer value." };
     }
-    if (num < 10 || num > 100) {
-        return { err: "Text size not between 1 and 100." }
+    if (num < 10 || num > 500) {
+        return { err: "Text size not between 1 and 500." }
     }
     return { err: "", val: num };
 }

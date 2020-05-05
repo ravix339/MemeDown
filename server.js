@@ -1,5 +1,4 @@
 var express = require('express');
-var app = express();
 var sizeOf = require('image-size');
 var https = require('https');
 var url = require('url');
@@ -7,14 +6,20 @@ var multer = require('multer');
 var urlExists = require('url-exists');
 var parseString = require('xml2js').parseString;
 var memedown = require('./memedown.js').methods;
-
+var config = require('./config/config.json')
 var storage = multer.memoryStorage()
 var upload = multer({ storage: storage })
+var fs = require('fs');
 
-app.use(express.static('public'));
+var credentials = {
+    key: fs.readFileSync('./config/'+config.KEY),
+    cert: fs.readFileSync('./config/'+config.CERT)
+}
 
 memedown.loadFonts();
 
+var app = express();
+app.use(express.static('public'));
 app.post('/process', upload.any(), async function (req, res) {
     var code = req.body.code;
     if (code == null || code == undefined || code == '') {
@@ -75,7 +80,16 @@ app.post('/process', upload.any(), async function (req, res) {
 });
 
 app.get('/', function (req, res) {
-    res.send("hello");
+    res.send("./public/index.html");
 });
 
-app.listen(8080, function () { });
+
+var server = https.createServer(credentials, app);
+server.listen(443);
+
+var httpApp = express();
+httpApp.get('*', function(req, res) {
+    res.redirect("https://" + req.headers.host + req.url);
+});
+
+httpApp.listen(80, function() {});

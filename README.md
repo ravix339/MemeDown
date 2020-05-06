@@ -5,7 +5,7 @@ A Markup Language for Memes
 This project relies on the [Google Fonts Github Repository](https://github.com/google/fonts) for the fonts. The `script.sh` file contains a (badly written) program that when executed when the working directory is the cloned repo, it will format the repo to match the specification required for the interpreter.
 
 ## Running the Server
-```node server.js``` will start the server on port 8080. You can configure this in `server.js`. 
+```node server.js``` will start an HTTP server on port 80 and an HTTPS server on 443. You can configure this in `server.js`. 
 
 ## API Call
 POST Request to /process with an optional image  the following body:

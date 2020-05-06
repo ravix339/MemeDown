@@ -1,6 +1,13 @@
 # MemeDown
 A Markup Language for Memes
 
+<b>Table of Contents</b>
+[Setup](https://github.com/ravix339/MemeDown#setup)
+[Running the Server](https://github.com/ravix339/MemeDown#running-the-server)
+[API Reference](https://github.com/ravix339/MemeDown#api-reference)
+[Language Specifications](https://github.com/ravix339/MemeDown#language-specifications)
+[To Do](https://github.com/ravix339/MemeDown#to-do)
+
 ## Setup
 This project relies on the [Google Fonts Github Repository](https://github.com/google/fonts) for the fonts. The `init.sh` file contains a initialization script that, when executed from the root directory of this repo, will clone and format the Google Fonts repo to fit the format that is required by the `Memedown.loadFonts()` method.
 
@@ -28,7 +35,7 @@ Each folder that is under the fonts directory will be considered a font family w
 ## Running the Server
 ```node server.js``` will start an HTTP server on port 80 and an HTTPS server on 443. You can configure this in `server.js`. 
 
-## API Call
+## API Reference
 POST Request to /process with an optional image  the following body:
 ```json
 {

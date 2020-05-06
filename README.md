@@ -1,12 +1,12 @@
 # MemeDown
 A Markup Language for Memes
 
-<b>Table of Contents</b>
-[Setup](https://github.com/ravix339/MemeDown#setup)
-[Running the Server](https://github.com/ravix339/MemeDown#running-the-server)
-[API Reference](https://github.com/ravix339/MemeDown#api-reference)
-[Language Specifications](https://github.com/ravix339/MemeDown#language-specifications)
-[To Do](https://github.com/ravix339/MemeDown#to-do)
+<b>Table of Contents</b><br/>
+[Setup](https://github.com/ravix339/MemeDown#setup)<br/>
+[Running the Server](https://github.com/ravix339/MemeDown#running-the-server)<br/>
+[API Reference](https://github.com/ravix339/MemeDown#api-reference)<br/>
+[Language Specifications](https://github.com/ravix339/MemeDown#language-specifications)<br/>
+[To Do](https://github.com/ravix339/MemeDown#to-do)<br/>
 
 ## Setup
 This project relies on the [Google Fonts Github Repository](https://github.com/google/fonts) for the fonts. The `init.sh` file contains a initialization script that, when executed from the root directory of this repo, will clone and format the Google Fonts repo to fit the format that is required by the `Memedown.loadFonts()` method.

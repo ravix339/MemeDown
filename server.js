@@ -5,7 +5,7 @@ var url = require('url');
 var multer = require('multer');
 var urlExists = require('url-exists');
 var parseString = require('xml2js').parseString;
-var memedown = require('./memedown.js').methods;
+var memedown = require('./lib/memedown.js').methods;
 var config = require('./config/config.json')
 var storage = multer.memoryStorage()
 var upload = multer({ storage: storage })
@@ -92,4 +92,4 @@ httpApp.get('*', function(req, res) {
     res.redirect("https://" + req.headers.host + req.url);
 });
 
-httpApp.listen(80, function() {});
+httpApp.listen(80 , function() {});

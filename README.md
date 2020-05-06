@@ -2,8 +2,29 @@
 A Markup Language for Memes
 
 ## Setup
-This project relies on the [Google Fonts Github Repository](https://github.com/google/fonts) for the fonts. The `script.sh` file contains a (badly written) program that when executed when the working directory is the cloned repo, it will format the repo to match the specification required for the interpreter.
+This project relies on the [Google Fonts Github Repository](https://github.com/google/fonts) for the fonts. The `init.sh` file contains a initialization script that, when executed from the root directory of this repo, will clone and format the Google Fonts repo to fit the format that is required by the `Memedown.loadFonts()` method.
 
+If you don't want to use the init script or would like to include your own custom fonts the folder structure for the custom fonts must follow this folder structure:
+```
+RepositoryRootDir
+├── fonts
+│   ├── fontonenamelower
+│   │   ├── FontOne-Bold.ttf
+│   │   ├── FontOne-BoldItalic.ttf
+│   │   ├── FontOne-Italic.ttf
+│   │   ├── FontOne-Regular.ttf
+│   │   ├── fileThatWontBeCheckedIn.notTTF
+│   │   └── folderThatWontBeChecked
+│   ├── fonttwonamelower
+│   │   ├── FontTwo-Bold.ttf
+│   │   ├── FontTwo-Italic.ttf
+│   │   └── FontTwo-Regular.ttf
+│   ├── ...
+│   │
+│
+└── ...
+```
+Each folder that is under the fonts directory will be considered a font family when the loadFonts() function is called. All fonts must end with `.ttf` and be in the font family folder (not contained in any of the subfolders of that). The Google font repository contains some fonts that have do not follow this folder structure which is why part of the script fixes that. Every font must have a suffix that will identify its font style. The default font to use must be named `YourFontName-Regular.ttf`. unlike the folders, the capitalization of the files does not matter. If one of the font types (Bold, Italic, BoldItalic) does not exist, there is no issue since the interpreter will utilize the fonts that are available.
 ## Running the Server
 ```node server.js``` will start an HTTP server on port 80 and an HTTPS server on 443. You can configure this in `server.js`. 
 
@@ -105,3 +126,4 @@ The format for the color is <code>color=&quot;myColor&quot;</code> where myColor
 - Add more defaults (position)
 - Memes memes memes
 - Add relative positions so you don't need to look for very specific pixels
+- Hook in the Bold/Italics parsing to create _special_ **memes**.

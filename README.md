@@ -1,5 +1,5 @@
 # MemeDown
-A Generator for Memes
+A Markup Language for Memes
 
 ## Setup
 This project relies on the [Google Fonts Github Repository](https://github.com/google/fonts) for the fonts. The `script.sh` file contains a (badly written) program that when executed when the working directory is the cloned repo, it will format the repo to match the specification required for the interpreter.

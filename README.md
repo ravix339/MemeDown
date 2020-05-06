@@ -1,18 +1,6 @@
 # MemeDown
 A Generator for Memes
 
-## Required NPM Packages
-- express
-- image-size
-- multer
-- url-exists
-- xml2js
-- words-array
-- canvas
-- url (built in)
-- https (built in)
-- fs (built in)
-
 ## Setup
 This project relies on the [Google Fonts Github Repository](https://github.com/google/fonts) for the fonts. The `script.sh` file contains a (badly written) program that when executed when the working directory is the cloned repo, it will format the repo to match the specification required for the interpreter.
 

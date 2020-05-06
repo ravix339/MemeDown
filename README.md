@@ -2,11 +2,66 @@
 A Markup Language for Memes
 
 <b>Table of Contents</b><br/>
+[This Repository](https://github.com/ravix339/MemeDown#this-repository)<br/>
 [Setup](https://github.com/ravix339/MemeDown#setup)<br/>
 [Running the Server](https://github.com/ravix339/MemeDown#running-the-server)<br/>
 [API Reference](https://github.com/ravix339/MemeDown#api-reference)<br/>
 [Language Specifications](https://github.com/ravix339/MemeDown#language-specifications)<br/>
 [To Do](https://github.com/ravix339/MemeDown#to-do)<br/>
+
+## This Repository
+```
+RepositoryRootDir
+├── README.md
+├── config (gitignored)
+├── examples
+│   ├── ilovememes.meme
+│   ├── memesbyhand.meme
+│   ├── memeseverywhere.meme
+│   ├── notemplates.meme
+│   └── out
+│       ├── jpg
+│       │   ├── ilovememes.jpg
+│       │   ├── memesbyhand.jpg
+│       │   ├── memeseverywhere.jpg
+│       │   └── notemplates.jpg
+│       └── png
+│           ├── ilovememes.png
+│           ├── memesbyhand.png
+│           ├── memeseverywhere.png
+│           └── notemplates.png
+├── fonts (gitignored)
+│   ├── fontone
+│   ├── ...
+│  ...
+├── init.sh
+├── lib
+│   ├── memedown.js
+│   └── multiline-text.js
+├── package-lock.json
+├── package.json
+├── public
+│   ├── codemirror
+│   │   ├── closetag.js
+│   │   ├── codemirror.css
+│   │   ├── codemirror.js
+│   │   ├── placeholder.js
+│   │   ├── xml-fold.js
+│   │   └── xml.js
+│   ├── css
+│   │   └── style.css
+│   ├── images
+│   │   ├── background.jpg
+│   │   ├── ex1.png
+│   │   ├── ex1_temp.jpg
+│   │   └── thinking.jpg
+│   ├── index.html
+│   └── script.js
+└── server.js
+```
+The lib directory contains the heart of the repository - specifically the code parsing and image processing capabilities that MemeDown provides.
+
+`server.js` contains an example implementation for a HTTPS server that will use the MemeDown code.
 
 ## Setup
 This project relies on the [Google Fonts Github Repository](https://github.com/google/fonts) for the fonts. The `init.sh` file contains a initialization script that, when executed from the root directory of this repo, will clone and format the Google Fonts repo to fit the format that is required by the `Memedown.loadFonts()` method.
@@ -33,8 +88,24 @@ RepositoryRootDir
 ```
 Each folder that is under the fonts directory will be considered a font family when the loadFonts() function is called. All fonts must end with `.ttf` and be in the font family folder (not contained in any of the subfolders of that). The Google font repository contains some fonts that have do not follow this folder structure which is why part of the script fixes that. Every font must have a suffix that will identify its font style. The default font to use must be named `YourFontName-Regular.ttf`. unlike the folders, the capitalization of the files does not matter. If one of the font types (Bold, Italic, BoldItalic) does not exist, there is no issue since the interpreter will utilize the fonts that are available.
 ## Running the Server
-```node server.js``` will start an HTTP server on port 80 and an HTTPS server on 443. You can configure this in `server.js`. 
+```node server.js``` will start an HTTP server on port 80 and an HTTPS server on 443. You can configure this in `server.js`. In order to allow HTTPS to work properly, you must have a HTTPS certificate and key. For the purposes of the developer, the file names were stored in a config.json file that would be used by the server to authenticate.
 
+To use HTTP (in order to run locally), remove the lines at the end of `server.js` that create an HTTPS and an httpApp that redirects to HTTPS. Specifically:
+```js
+var server = https.createServer(credentials, app);
+server.listen(443);
+
+var httpApp = express();
+httpApp.get('*', function(req, res) {
+    res.redirect("https://" + req.headers.host + req.url);
+});
+
+httpApp.listen(80 , function() {});
+```
+Afterwards, add the following line and the code will run using http.
+```js
+app.listen(PORT_NUMBER, function() {});
+```
 ## API Reference
 POST Request to /process with an optional image  the following body:
 ```json

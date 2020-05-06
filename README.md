@@ -99,3 +99,9 @@ The color parameter can appear in the tag as <code>c</code>, <code>color</code>,
 <code>rgb</code>.
 
 The format for the color is <code>color=&quot;myColor&quot;</code> where myColor is any accepted CSS color value (hex code and color names are accepted). If this parameter is left blank or the value of the parameter is not accepted, the text specified in the tag will be displayed in white (#ffffff).
+
+## To Do
+- Add template memes
+- Add more defaults (position)
+- Memes memes memes
+- Add relative positions so you don't need to look for very specific pixels

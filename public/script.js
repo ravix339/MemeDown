@@ -21,6 +21,7 @@ $(document).ready(function () {
 
     $('#fileclear').on('click', function () {
         document.getElementById('img').value = "";
+        document.getElementById('imglabel').innerHTML = "Select an image";
         $('#log').html('Uploaded file cleared');
     });
 

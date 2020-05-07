@@ -83,7 +83,6 @@ app.get('/', function (req, res) {
     res.send("./public/index.html");
 });
 
-
 var server = https.createServer(credentials, app);
 server.listen(443);
 

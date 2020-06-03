@@ -199,6 +199,27 @@ The color parameter can appear in the tag as <code>c</code>, <code>color</code>,
 
 The format for the color is <code>color=&quot;myColor&quot;</code> where myColor is any accepted CSS color value (hex code and color names are accepted). If this parameter is left blank or the value of the parameter is not accepted, the text specified in the tag will be displayed in white (#ffffff).
 
+
+<h4>basic parameter</h4>
+The basic parameter is an <b>optional</b> parameter that defines whether the text in that tag will
+allow for bold and italic styled font. Setting this parameter to <code>false</code> will allow for bolds
+and italic fonts.
+
+The basic parameter can appear in the tag as <code>basic</code>, <code>raw</code>, <code>b</code>.
+
+The format for the basic parameter is <code>color=&quot;true&quot;</code> or
+<code>color=&quot;false&quot;</code> If this parameter is left blank, the text will be treated as basic (no
+bold and italic). Using bold and italic fonts must be done in the body of the tag is (where the text to be
+displayed is). Surround text with astericks (e.g. <code>\*Bold Text\*</code>) to bold it, if possible.
+Surround text with an underscore (<code>\_Italic Text\_</code>) to use italics, if possible. If one of these is
+enclosed in the other (e.g. <code>\_\*Some Text\*\_</code> or <code>\*\_Some Other Text\_\*</code>), the interpreter
+will attempt to use a bold-italic font. If none exists, then the interpreter will use the outermost style
+(italic and bold for the two examples respectively).
+
+In order to use underscores and astericks in the text in non-basic mode, use <code>\\_</code> and
+<code>\\*</code>. In cases of mismatch or unescaped underscores and astericks, the interpreter attempts to
+automatically escape these and will print the text.
+
 ## To Do
 - Add template memes
 - Add more defaults (position)

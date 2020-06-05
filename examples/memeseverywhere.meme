@@ -1,5 +1,5 @@
 <meme>
   <image>https://imgflip.com/s/meme/X-X-Everywhere.jpg</image>
-  <text p="700,0|1100,200">MEMES</text>
-  <text p="600,1300|1700,1400">MEMES EVERYWHERE</text>
+  <text abs_p="700,0|1100,200">MEMES</text>
+  <text abs_p="600,1300|1700,1400">MEMES EVERYWHERE</text>
 </meme>

@@ -1,5 +1,5 @@
 <meme>
 	<image>https://i.imgflip.com/2178y0.jpg?a441288</image>
-	<text position="332,8|636,269" color="black">Making memes through code</text>
-	<text position="327,298|629,542" color="#fe0ab3">Making memes by hand</text>
+	<text abs_position="332,8|636,269" color="black">Making memes through code</text>
+	<text abs_position="327,298|629,542" color="#fe0ab3">Making memes by hand</text>
 </meme>

@@ -1,7 +1,7 @@
 <meme>
 	<image>https://i.imgflip.com/26j8u5.jpg</image>
-	<text position="747,167|1138,674" size="100" color="blue">Promise to make better memes easier</text>
-	<text position="2055,175|2437,682" size="100" color="blue">Make a meme generator</text>
-	<text position="758,875|1143,1376" size="100" color="blue">No templates (yet)</text>
-	<text position="2046,864|2415,1373" size="100" color="blue">No templates (yet)</text>
+	<text abs_position="747,167|1138,674" size="100" color="blue">Promise to make better memes easier</text>
+	<text abs_position="2055,175|2437,682" size="100" color="blue">Make a meme generator</text>
+	<text abs_position="758,875|1143,1376" size="100" color="blue">No templates (yet)</text>
+	<text abs_position="2046,864|2415,1373" size="100" color="blue">No templates (yet)</text>
 </meme>

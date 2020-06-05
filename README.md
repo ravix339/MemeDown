@@ -155,10 +155,9 @@ occupy. If the text is long, the bounding box limits the fontsize of the text so
 the text within the box. This is not always possible if the bounding box is too small or the text is too long.
 
 The position parameter can appear in the tag as <code>l</code>, <code>loc</code>, <code>location</code>,
-<code>p</code>, <code>pos</code>, or <code>position</code>.
+<code>p</code>, <code>pos</code>, or <code>position</code>. By adding <code>abs_</code> prefix to any of these options will make the positional parameters represent the absolute (pixel) location of the bounding box. By default, the positional argument defines the bounding box using percentages.
 
-The position parameter can handle all non-negative integers. If the user passes in a floating point number,
-the interpreter truncates decimal.
+The position parameter can handle all non-negative numbers. If using a proportional position (default), the numbers can be between 0 and 100 and can be floating point. With the absolute positioning (prefix of <code>abs_</code>), the position must be a non-negative integer.
 
 The format for the parameter is <code>position=&quot;x0,y0|x1,y1&quot;</code> where (x0,y0) is the upper
 left corner of the bounding box and (x1,y1) is the bottom right corner.
@@ -224,4 +223,3 @@ automatically escape these and will print the text.
 - Add template memes
 - Add more defaults (position)
 - Memes memes memes
-- Add relative positions so you don't need to look for very specific pixels

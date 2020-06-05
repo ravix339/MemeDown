@@ -1,0 +1,5 @@
+<!--Same as ilovememes.meme but using proportional positions instead of absolute-->
+<meme>
+    <image>https://i.kym-cdn.com/photos/images/facebook/001/288/258/1fc.jpg</image>
+    <text position="8.333,68.664|50,93.6329" font="craftygirls" size="70" color="blue">I love memes</text>
+</meme>

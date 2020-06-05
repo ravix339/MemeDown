@@ -225,4 +225,3 @@ automatically escape these and will print the text.
 - Add more defaults (position)
 - Memes memes memes
 - Add relative positions so you don't need to look for very specific pixels
-- Hook in the Bold/Italics parsing to create _special_ **memes**.

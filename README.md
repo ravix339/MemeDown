@@ -223,3 +223,4 @@ automatically escape these and will print the text.
 - Add template memes
 - Add more defaults (position)
 - Memes memes memes
+- Fix Bold Italics gluing for within a single word.

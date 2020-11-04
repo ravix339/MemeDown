@@ -32,7 +32,7 @@ app.post('/process', upload.any(), async function (req, res) {
     var imdata;
     var dimensions;
 
-    parseString(code, function(err, result) {
+    parseString(code, function (err, result) {
         if (err) {
             res.status(400).send({ err: "Malformed memedown code." });
             return;
@@ -45,7 +45,7 @@ app.post('/process', upload.any(), async function (req, res) {
         }
 
         if (!requireIm) {
-            imdata = req.files[0].buffer;
+            imdata = (req.files.length > 0 ? req.files[0].buffer : Buffer.from(req.body.img, 'base64'));
             dimensions = sizeOf(imdata);
             var result = memedown.drawCanvas(textData.data, imdata, dimensions.width, dimensions.height);
             res.status(200).send({ data: result.toDataURL() });
@@ -53,20 +53,20 @@ app.post('/process', upload.any(), async function (req, res) {
         }
 
         var website = textData.data.image;
-        urlExists(website, function(err, exists) {
+        urlExists(website, function (err, exists) {
             if (err) {
-                res.status(500).send({err: 'Internal Error when processing website url'});
+                res.status(500).send({ err: 'Internal Error when processing website url' });
                 return;
             }
             if (!exists) {
-                res.status(400).send({err: 'Invalid image url'})
+                res.status(400).send({ err: 'Invalid image url' })
                 return;
             }
             var options = url.parse(website);
             options.protocol = 'https:'
-            https.get(options, function(response) {
+            https.get(options, function (response) {
                 var chunks = [];
-                response.on('data', function(chunk) {
+                response.on('data', function (chunk) {
                     chunks.push(chunk);
                 }).on('end', function () {
                     imdata = Buffer.concat(chunks);

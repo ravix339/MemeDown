@@ -26,7 +26,8 @@ app.post('/process', upload.any(), async function (req, res) {
         res.status(400).send({ err: "No memedown code." });
         return;
     }
-    var requireIm = (req.files.length == 0 ? true : false);
+
+    var requireIm = req.files.length === 0 && !("img" in req.body && req.body.img !== "undefined");
 
     var imdata;
     var dimensions;
